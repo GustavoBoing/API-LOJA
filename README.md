@@ -37,17 +37,19 @@ Todas as requisições e testes de endpoints são realizadas via **Postman**, co
 
 ---
 
-👨‍💻 Autor
+## 👨‍💻 Autor
 
 Gustavo Boing
 <a href="https://www.linkedin.com/in/gustavo-boing-72a103272/" target="_blank">Linkedin</a>
 
 ---
 
-📝 Licença
+## 📝 Licença
 
 Este projeto está licenciado sob a licença MIT — sinta-se à vontade para usar e modificar conforme necessário.github
 
-💡 Objetivo
+---
+
+## 💡 Objetivo
 
 O objetivo principal deste projeto é demonstrar o desenvolvimento de uma API RESTful em Java, aplicando boas práticas de arquitetura, persistência de dados e modularização, simulando o fluxo real de uma loja física — desde o cadastro de produtos até a atualização de estoque após as vendas.
