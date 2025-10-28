@@ -20,6 +20,12 @@ public class CustomerService {
         );
     }
 
+    public Customer findCustomerById(int id){
+        return customerRepository.findCustomerById(id).orElseThrow(
+                () -> new RuntimeException("Name is not found")
+        );
+    }
+
     public void saveCustomer(Customer customer){
         customerRepository.saveAndFlush(customer);
     }

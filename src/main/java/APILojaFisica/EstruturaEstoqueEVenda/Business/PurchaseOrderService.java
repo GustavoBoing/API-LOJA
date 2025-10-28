@@ -1,9 +1,6 @@
 package APILojaFisica.EstruturaEstoqueEVenda.Business;
 
-import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Entities.Product;
-import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Entities.PurchaseItem;
-import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Entities.PurchaseOrder;
-import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Entities.Supplier;
+import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Entities.*;
 import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Repositories.ProductRepository;
 import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Repositories.PurchaseOrderRepository;
 import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Repositories.SupplierRepository;
@@ -16,11 +13,13 @@ public class PurchaseOrderService {
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final SupplierRepository supplierRepository;
     private final ProductService productService;
+    private final StockService stockService;
 
-    public PurchaseOrderService(PurchaseOrderRepository purchaseOrderRepository, SupplierRepository supplierRepository, ProductService productService) {
+    public PurchaseOrderService(PurchaseOrderRepository purchaseOrderRepository, SupplierRepository supplierRepository, ProductService productService, StockService stockService) {
         this.purchaseOrderRepository = purchaseOrderRepository;
         this.supplierRepository = supplierRepository;
         this.productService = productService;
+        this.stockService = stockService;
     }
 
     public PurchaseOrder findPurchaseOrderById(int id){
@@ -30,9 +29,11 @@ public class PurchaseOrderService {
     }
 
     public void deletePurchaseOrderById(int id){
+        if(!purchaseOrderRepository.existsById(id)){
+            throw new RuntimeException("Id insert not found");
+        }
         purchaseOrderRepository.deletePurchaseOrderById(id);
     }
-     // purchaseOrder.getItems().forEach(item -> item.setPurchaseOrder(purchaseOrder));
 
     public void insertNewPurchaseOrder(PurchaseOrder purchaseOrder){
         purchaseOrder.updateTotal();
@@ -47,6 +48,9 @@ public class PurchaseOrderService {
         purchaseOrder.getItems().forEach(item -> {
             int productId = item.getProductId().getId();
             Product product = productService.findProductById(productId);
+            Stock stock = stockService.findByStockByIdProduct(productId);
+            int quantityStock = stock.getQuantity();
+            stock.setQuantity(quantityStock + item.getQuantity());
 
             if(item.getQuantity() < 0){
                 throw new RuntimeException("Quantity insert is invalid");
@@ -54,6 +58,7 @@ public class PurchaseOrderService {
             item.setPriceUnity(product.getSalePrice());
             item.setProductId(product);
             item.setPurchaseOrderId(purchaseOrder);
+
         });
         purchaseOrder.setIdSupplier(supplier);
         purchaseOrderRepository.saveAndFlush(purchaseOrder);
