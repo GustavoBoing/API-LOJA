@@ -23,7 +23,7 @@ public class PurchaseOrderService {
     }
 
     public PurchaseOrder findPurchaseOrderById(int id){
-        return purchaseOrderRepository.findPurchseOrderById(id).orElseThrow(
+        return purchaseOrderRepository.findPurchaseOrderById(id).orElseThrow(
                 () -> new RuntimeException("Purchase Order Id is not found")
         );
     }
@@ -36,12 +36,11 @@ public class PurchaseOrderService {
     }
 
     public void insertNewPurchaseOrder(PurchaseOrder purchaseOrder){
-        purchaseOrder.updateTotal();
-        purchaseOrder.defDate();
         int supplierId = purchaseOrder.getIdSupplier().getId();
         Supplier supplier = supplierRepository.findSupplierById(supplierId).orElseThrow(
                 () -> new RuntimeException("Supplier not exists")
         );
+        purchaseOrder.setDateTime(LocalDateTime.now());
         if(purchaseOrder.getDateTime().isAfter(LocalDateTime.now())){
             throw new RuntimeException("The date insert  id after date and time now");
         }
@@ -58,9 +57,9 @@ public class PurchaseOrderService {
             item.setPriceUnity(product.getSalePrice());
             item.setProductId(product);
             item.setPurchaseOrderId(purchaseOrder);
-
         });
         purchaseOrder.setIdSupplier(supplier);
+        purchaseOrder.updateTotal();
         purchaseOrderRepository.saveAndFlush(purchaseOrder);
     }
 

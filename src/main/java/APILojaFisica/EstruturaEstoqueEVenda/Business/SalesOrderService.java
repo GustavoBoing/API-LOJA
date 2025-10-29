@@ -5,6 +5,7 @@ import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Repositories.SalesOr
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class SalesOrderService {
@@ -24,6 +25,15 @@ public class SalesOrderService {
         return salesOrderRepository.findSalesOrderById(id).orElseThrow(
                 () -> new RuntimeException("SalesOrder Id is not found")
         );
+    }
+
+    public List<SalesOrder> findSalesOrderByIdCustomer(int id){
+        List<SalesOrder> items = salesOrderRepository.findSalesOrderByCustomerId_Id(id);
+
+        if(items.isEmpty()){
+            throw new RuntimeException("IdCustomer insert is not found");
+        }
+        return items;
     }
 
     public void saveSalesOrder(SalesOrder salesOrder){
@@ -54,7 +64,7 @@ public class SalesOrderService {
         if(!salesOrderRepository.existsById(id)){
             throw new RuntimeException("Id insert not found");
         }
-        salesOrderRepository.deleleSalesOrderById(id);
+        salesOrderRepository.deleteSalesOrderById(id);
     }
 
     public void refreshSalesOrder(int id, SalesOrder salesOrder){
@@ -87,7 +97,7 @@ public class SalesOrderService {
         }
 
         salesOrder.updateTotal();
-        
+
         salesOrderRepository.saveAndFlush(salesOrder);
     }
 }

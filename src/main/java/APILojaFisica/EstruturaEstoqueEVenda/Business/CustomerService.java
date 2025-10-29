@@ -22,7 +22,7 @@ public class CustomerService {
 
     public Customer findCustomerById(int id){
         return customerRepository.findCustomerById(id).orElseThrow(
-                () -> new RuntimeException("Name is not found")
+                () -> new RuntimeException("Id is not found")
         );
     }
 

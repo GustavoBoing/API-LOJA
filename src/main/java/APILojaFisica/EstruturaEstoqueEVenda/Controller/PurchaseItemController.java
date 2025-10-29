@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/purchaseItem")
-
 public class PurchaseItemController {
 
     private final PurchaseItemService purchaseItemService;
@@ -46,12 +45,6 @@ public class PurchaseItemController {
     @PutMapping
     public ResponseEntity<Void> refreshItemById(@RequestBody PurchaseItem purchaseItem, @RequestParam int id){
         purchaseItemService.refreshPurchaseItemById(purchaseItem, id);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deletePurchaseItemById(@RequestParam int id){
-        purchaseItemService.deletePurchaseItemById(id);
         return ResponseEntity.ok().build();
     }
 }

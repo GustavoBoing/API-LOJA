@@ -12,7 +12,4 @@ public interface PurchaseItemRepository extends JpaRepository<PurchaseItem, Inte
     Optional<PurchaseItem> findPurchaseItemById(int id);
     List<PurchaseItem> findPurchaseItemByPurchaseOrderId_Id(int id);
     List<PurchaseItem> findPurchaseItemByProductId_Id(int id);
-
-    @Transactional
-    void deletePurchaseItemById(int id);
 }

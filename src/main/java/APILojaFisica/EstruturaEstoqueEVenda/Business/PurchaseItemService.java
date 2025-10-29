@@ -3,6 +3,7 @@ package APILojaFisica.EstruturaEstoqueEVenda.Business;
 import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Entities.Product;
 import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Entities.PurchaseItem;
 import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Entities.PurchaseOrder;
+import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Entities.Stock;
 import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Repositories.ProductRepository;
 import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Repositories.PurchaseItemRepository;
 import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Repositories.PurchaseOrderRepository;
@@ -13,9 +14,11 @@ import java.util.List;
 @Service
 public class PurchaseItemService {
     private final PurchaseItemRepository purchaseItemRepository;
+    private final StockService stockService;
 
-    public PurchaseItemService(PurchaseItemRepository purchaseItemRepository) {
+    public PurchaseItemService(PurchaseItemRepository purchaseItemRepository, StockService stockService) {
         this.purchaseItemRepository = purchaseItemRepository;
+        this.stockService = stockService;
     }
 
     public PurchaseItem findPurchaseItemById(int id) {
@@ -48,14 +51,19 @@ public class PurchaseItemService {
         return items;
     }
 
-    public void deletePurchaseItemById(int id){ purchaseItemRepository.deletePurchaseItemById(id); }
-
     public void refreshPurchaseItemById(PurchaseItem purchaseItem, int id){
         PurchaseItem actualPurchaseItem = findPurchaseItemById(id);
+        int productId = purchaseItem.getProductId().getId();
+        Stock stock = stockService.findByStockByIdProduct(productId);
 
         if(purchaseItem.getQuantity() != null){
             if(purchaseItem.getQuantity() < 0){
+                stock.setQuantity(stock.getQuantity() - actualPurchaseItem.getQuantity());
+                stock.setQuantity(stock.getQuantity() + purchaseItem.getQuantity());
                 actualPurchaseItem.setQuantity(purchaseItem.getQuantity());
+            }
+            else {
+                throw new RuntimeException("Quantity insert is invalid");
             }
         }
 

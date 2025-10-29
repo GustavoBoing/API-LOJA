@@ -1,5 +1,6 @@
 package APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class SalesItem {
 
     @ManyToOne
     @JoinColumn(name = "salesOrderId", nullable = false)
+    @JsonBackReference
     SalesOrder salesOrderId;
 
     @ManyToOne
