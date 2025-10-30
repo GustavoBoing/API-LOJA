@@ -29,10 +29,10 @@ public class SalesItem {
     @Column(name="quantity", nullable = false)
     Integer quantity;
 
-    @Column(name="total", nullable = false)
-    Double priceUnit;
+    @Column(name="priceUnity", nullable = false)
+    Double priceUnity;
 
     public Double subtotal(){
-        return quantity * priceUnit;
+        return quantity * priceUnity;
     }
 }

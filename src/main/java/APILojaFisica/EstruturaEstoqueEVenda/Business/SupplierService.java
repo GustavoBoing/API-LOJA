@@ -36,7 +36,7 @@ public class SupplierService {
                 .phone(dataSupplier != null && dataSupplier.getPhone() != null ? dataSupplier.getPhone() : actualDataSupplier.getPhone())
                 .email(dataSupplier != null && dataSupplier.getEmail() != null ? dataSupplier.getPhone() : actualDataSupplier.getEmail())
                 .build();
-        saveSupplier(newDataSupplier);
+        supplierRepository.saveAndFlush(newDataSupplier);
     }
 }
 

@@ -24,6 +24,9 @@ public class PurchaseOrderController {
         return ResponseEntity.ok(purchaseOrderService.findPurchaseOrderById(id));
     }
 
+    @GetMapping ("/purchaseOrderByIdSupplier")
+    public List<PurchaseOrder> listPurchaseOrderByIdSupplier(@RequestParam int id){ return purchaseOrderService.findPurchaseOrderByIdSupplier(id); }
+
     @GetMapping
     public List<PurchaseOrder> listPurchaseOrder(){ return purchaseOrderRepository.findAll(); }
 

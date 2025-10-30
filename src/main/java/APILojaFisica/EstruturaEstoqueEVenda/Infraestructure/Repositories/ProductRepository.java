@@ -14,7 +14,4 @@ public interface ProductRepository extends JpaRepository <Product, Integer> {
 
     @Transactional
     void deleteById(int id);
-
-    @Transactional
-    void deleteByName(String nome);
 }

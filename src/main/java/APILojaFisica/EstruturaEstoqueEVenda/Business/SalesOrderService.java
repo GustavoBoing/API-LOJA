@@ -51,7 +51,7 @@ public class SalesOrderService {
 
             stock.setQuantity(stock.getQuantity() - item.getQuantity());
             item.setProductId(product);
-            item.setPriceUnit(product.getSalePrice());
+            item.setPriceUnity(product.getSalePrice());
             item.setSalesOrderId(salesOrder);
         });
         salesOrder.setCustomerId(customer);
@@ -79,7 +79,6 @@ public class SalesOrderService {
         }
 
         if(salesOrder.getItems() != null){
-            actualSalesOrder.getItems().clear();
             for (SalesItem item : salesOrder.getItems()) {
                 int productId = item.getProductId().getId();
                 Product product = productService.findProductById(productId);
@@ -89,15 +88,39 @@ public class SalesOrderService {
                     throw new RuntimeException("Quantity insert is invalid");
                 }
 
+                SalesItem oldItem = actualSalesOrder.getItems().stream()
+                        .filter(i -> i.getProductId().getId() == productId)
+                        .findFirst()
+                        .orElse(null);
+
+                int oldQuantity = (oldItem != null) ? oldItem.getQuantity() : 0;
+                int newQuantity = item.getQuantity();
+                int getDifference = newQuantity - oldQuantity;
+
+                stock.setQuantity(stock.getQuantity() - getDifference);
+
+                // Atualiza o item no pedido
+                if (oldItem != null) {
+                    oldItem.setQuantity(newQuantity);
+                    oldItem.setPriceUnity(product.getSalePrice());
+                } else {
+                    item.setPriceUnity(product.getSalePrice());
+                    item.setProductId(product);
+                    item.setSalesOrderId(actualSalesOrder);
+                    actualSalesOrder.getItems().add(item);
+                }
+
+                /*
                 stock.setQuantity(stock.getQuantity() - item.getQuantity());
                 item.setProductId(product);
                 item.setPriceUnit(product.getSalePrice());
                 item.setSalesOrderId(salesOrder);
+                */
             }
         }
 
-        salesOrder.updateTotal();
+        actualSalesOrder.updateTotal();
 
-        salesOrderRepository.saveAndFlush(salesOrder);
+        salesOrderRepository.saveAndFlush(actualSalesOrder);
     }
 }

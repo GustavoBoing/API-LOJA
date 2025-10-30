@@ -19,7 +19,7 @@ public class StockService {
     }
 
     public Stock findByStockByIdProduct(int productId){
-        return stockRepository.findByProductId(productId).orElseThrow(
+        return stockRepository.findByProduct_Id(productId).orElseThrow(
                 () -> new RuntimeException("IdStock not found")
         );
     }
@@ -32,14 +32,12 @@ public class StockService {
 
     public void saveStock(Stock stock){
         Product product = productRepository.getReferenceById(stock.getProduct().getId());
-        Integer quantityMinimumProduct = product.getMinimumStock();
+        int quantityMinimumProduct = product.getMinimumStock();
         if(stock.getQuantity() < 0){
             throw new RuntimeException("Quantity insert is invalid");
         }
-        if(quantityMinimumProduct < stock.getQuantity()){
-            new Thread(() -> {
-                JOptionPane.showMessageDialog(null, "The quantity entered is less than the minimum quantity of the product");
-            }).start();
+        if(quantityMinimumProduct > stock.getQuantity()){
+            System.out.println("The quantity entered is less than the minimum quantity of the product!");
         }
         stockRepository.saveAndFlush(stock);
     }
@@ -57,7 +55,7 @@ public class StockService {
                 .storageUnity(stock != null && stock.getStorageUnity() != null ? stock.getStorageUnity() : actualStock.getStorageUnity())
                 .locale(stock != null && stock.getLocale() != null ? stock.getLocale() : actualStock.getLocale())
                 .build();
-        saveStock(newDataStock);
+        stockRepository.saveAndFlush(newDataStock);
     }
 
 }

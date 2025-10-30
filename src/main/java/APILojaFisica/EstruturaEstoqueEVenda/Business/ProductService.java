@@ -35,14 +35,21 @@ public class ProductService {
         );
     }
 
-    public void deleteProductByName(String nome){
-        productRepository.deleteByName(nome);
+    public Product findProductByName(String name){
+        return productRepository.findByName(name).orElseThrow(
+                () -> new RuntimeException("Id not exist")
+        );
+    }
+
+    public void deleteProductById(int id){
+        productRepository.deleteById(id);
     }
 
     public void refreshProduct(int id, Product product){
         Product actualValue = productRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("id not exists")
         );
+        /*
         Product newValue = Product.builder()
                 .id(product.getId())
                 .sku(product != null && product.getSku() != null ? product.getSku() : actualValue.getSku())
@@ -52,7 +59,32 @@ public class ProductService {
                 .salePrice(product != null && product.getSalePrice() != null ? product.getSalePrice() : actualValue.getSalePrice())
                 .minimumStock(product != null && product.getMinimumStock() != null ? product.getMinimumStock() : actualValue.getMinimumStock())
                 .build();
-        saveProduct(newValue);
+         */
+        if(product.getSku() != null){
+            actualValue.setSku(product.getSku());
+        }
+
+        if(product.getName() != null){
+            actualValue.setName(product.getName());
+        }
+
+        if(product.getDescription() != null){
+            actualValue.setDescription(product.getDescription());
+        }
+
+        if(product.getCost() != null){
+            actualValue.setCost(product.getCost());
+        }
+
+        if(product.getSalePrice() != null){
+            actualValue.setSalePrice(product.getSalePrice());
+        }
+
+        if(product.getMinimumStock() != null){
+            actualValue.setMinimumStock(product.getMinimumStock());
+        }
+
+        productRepository.saveAndFlush(actualValue);
     }
 
 

@@ -23,8 +23,8 @@ public class StockController {
     }
 
     @GetMapping("/searchStockByProduct")
-    public ResponseEntity<Optional<Stock>> findStockByIdProduct(@RequestParam int productId){
-        return ResponseEntity.ok(stockRepository.findByProductId(productId));
+    public ResponseEntity<Stock> findStockByIdProduct_Id(@RequestParam int productId){
+        return ResponseEntity.ok(stockService.findByStockByIdProduct(productId));
     }
 
     @GetMapping("/searchStockById")

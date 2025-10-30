@@ -19,7 +19,12 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-    @GetMapping ("/searchProduct")
+    @GetMapping ("/name")
+    public Product findProductByName(@RequestParam String name){
+        return productService.findProductByName(name);
+    }
+
+    @GetMapping ("/id")
     public Product findProductByName(@RequestParam int id){
         return productService.findProductById(id);
     }
@@ -35,8 +40,8 @@ public class ProductController {
     }
 
     @DeleteMapping
-    public void deleteProductBy(@RequestParam String nome){
-        productService.deleteProductByName(nome);
+    public void deleteProductBy(@RequestParam int id){
+        productService.deleteProductById(id);
     }
 
     @PutMapping

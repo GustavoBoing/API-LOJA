@@ -29,7 +29,7 @@ public class SalesOrderController {
         return ResponseEntity.ok(salesOrderService.findSalesOrderById(id));
     }
 
-    @GetMapping("specifyCustomer")
+    @GetMapping("/specifyCustomer")
     public ResponseEntity<List<SalesOrder>> findSalesOrderByIdCustomer(@RequestParam int id){
         return ResponseEntity.ok(salesOrderService.findSalesOrderByIdCustomer(id));
     }
