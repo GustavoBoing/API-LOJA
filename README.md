@@ -34,6 +34,19 @@ Todas as requisições e testes de endpoints são realizadas via **Postman**, co
 | Banco de Dados | PostgreSQL |
 | Testes de API | Postman |
 | Gerenciador de Dependências | Maven |
+| Testes Unitários | JUnit & Mockito |
+
+---
+
+## 🧪 Testes Unitários (Em progresso 🚧)
+O projeto está sendo desenvolvido seguindo boas práticas de qualidade de software. Atualmente, a camada de Service está passando por um processo de cobertura de testes para garantir a integridade das regras de negócio.
+
+O que está sendo testado:
+Cenários de Sucesso: Validação de fluxos onde os dados estão corretos e as persistências (via Mockito) devem ocorrer com sucesso.
+
+Tratamento de Exceções: Uso de assertThrows para garantir que o sistema interrompa operações inválidas (como custos negativos ou estoques abaixo de zero) com as mensagens de erro corretas.
+
+Nota: A cobertura de testes está sendo implementada gradualmente em todas as classes de serviço do projeto. O objetivo é alcançar a cobertura total das principais regras de negócio em breve.
 
 ---
 
