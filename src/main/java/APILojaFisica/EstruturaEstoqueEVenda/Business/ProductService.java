@@ -4,16 +4,19 @@ import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Entities.Product;
 import APILojaFisica.EstruturaEstoqueEVenda.Infraestructure.Repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository){
         this.productRepository = productRepository;
     }
 
+    /*public ProductService() {
+        this.productRepository = productRepository;
+    }*/
+
+    //testes executados
     public void saveProduct(Product product){
         double cost = product.getCost();
         int minimumStock = product.getMinimumStock();
@@ -29,17 +32,20 @@ public class ProductService {
         productRepository.saveAndFlush(product);
     }
 
+    //
     public Product findProductById(int id){
         return productRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Id not exist")
         );
     }
 
+    //testes executados
     public Product findProductByName(String name){
         return productRepository.findByName(name).orElseThrow(
-                () -> new RuntimeException("Id not exist")
+                () -> new RuntimeException("name not exist")
         );
     }
+
 
     public void deleteProductById(int id){
         productRepository.deleteById(id);
